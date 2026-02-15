@@ -1,0 +1,29 @@
+# Ambiente virtual
+.venv/
+venv/
+
+# Arquivos de log
+*.log
+logs/
+
+# Arquivos temporários e cache do Python
+*.pyc
+__pycache__/
+
+# Configurações locais e credenciais
+.env
+api/etl/db_connection.py
+
+# Banco de dados local (se usar SQLite)
+*.sqlite3
+
+# Dados brutos
+data/raw/
+
+# Arquivos gerados automaticamente
+*.tmp
+*.bak
+
+# Docker
+*.pid
+*.seed

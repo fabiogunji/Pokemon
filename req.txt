@@ -1,0 +1,9 @@
+pandas
+requests
+sqlalchemy
+psycopg2-binary
+pipfastapi
+uvicorn
+openai-agents
+pydantic
+python-multipart
