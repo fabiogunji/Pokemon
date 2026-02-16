@@ -2,8 +2,10 @@ pandas
 requests
 sqlalchemy
 psycopg2-binary
-pipfastapi
+fastapi
 uvicorn
 openai-agents
 pydantic
 python-multipart
+
+

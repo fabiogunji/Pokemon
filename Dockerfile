@@ -1,11 +1,16 @@
 FROM python:3.11-slim
 
-WORKDIR /req.txt /api
+# Define a pasta onde as coisas vão ficar dentro do Docker
+WORKDIR /app
 
-RUN pip install req.txt
+# Copia o arquivo de texto para dentro do Docker
+COPY req.txt .
 
-COPY . /api/
+# Instala as bibliotecas corretamente usando o -r
+RUN pip install --no-cache-dir -r req.txt
 
-EXPOSE 8000
+# Copia todo o seu projeto (pastas api, etl, etc) para o Docker
+COPY . .
 
-CMD ["sh","c",python main.py migrate && python main.py runserver 0.0.0.0:8000] 
+# Comando para iniciar sua API
+CMD ["uvicorn", "api.teste2:app", "--host", "0.0.0.0", "--port", "8000"]
