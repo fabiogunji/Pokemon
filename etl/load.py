@@ -49,7 +49,39 @@ def carregarDadosStgPokemons(nome, lista):
     finally: 
         cur.close() 
         conn.close()
-    
+
+def carregarDadosPokemons(p):
+    conn = get_connection() # Usando seu db_connection.py corrigido
+    cur = conn.cursor()
+    try:
+        sql = """
+            INSERT INTO pokemon (nome, geracao, hp, ataque, defesa, velocidade, tipo_1, tipo_2, altura, peso)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            ON CONFLICT (nome) DO UPDATE SET
+                geracao = EXCLUDED.geracao,
+                hp = EXCLUDED.hp,
+                ataque = EXCLUDED.ataque,
+                defesa = EXCLUDED.defesa,
+                velocidade = EXCLUDED.velocidade,
+                tipo_1 = EXCLUDED.tipo_1,
+                tipo_2 = EXCLUDED.tipo_2,
+                altura = EXCLUDED.altura,
+                peso = EXCLUDED.peso;
+        """
+        cur.execute(sql, (
+            p['nome'], p['geracao'], p['hp'], p['ataque'], 
+            p['defesa'], p['velocidade'], p['tipo_1'], 
+            p['tipo_2'], p['altura'], p['peso']
+        ))
+        conn.commit()
+    except Exception as e:
+        print(f"Erro ao inserir no banco: {e}")
+        conn.rollback()
+    finally:
+        cur.close()
+        conn.close()
+
+'''
 def carregarDadosPokemons(nome, listaTipo, listaEstatistica, listaGeracao):
     try:
         logging.info(f"Inserção de Pokemons na tabela: {nome}")
@@ -71,6 +103,6 @@ def carregarDadosPokemons(nome, listaTipo, listaEstatistica, listaGeracao):
         cur.close() 
         conn.close()
     
-
+'''
     
     
