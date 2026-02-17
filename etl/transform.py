@@ -25,7 +25,7 @@ def transformarDados(nome,resGeral):
         # Geraççao
         generation = data_species['generation']['name']
     
-        listaTransformada = [*tipos, *stats,*data_species]
+        listaTransformada = [*tipos, *stats,*generation]
         
         listaTipo = [*tipos]
         listaEstatistica = [*stats]
@@ -51,3 +51,4 @@ def transformarDados(nome,resGeral):
         logging.exception(f"Erro ao transformar dados do Pokemon {nome}: {e}")
         
     return listaTransformada
+

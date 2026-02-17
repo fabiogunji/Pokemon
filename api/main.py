@@ -1,9 +1,12 @@
 import requests
-import pandas as pd
-from fastapi import FastAPI, Form 
-from fastapi.responses import HTMLResponse
-from etl.extract import buscarPokemonNome # Certifique-se que o caminho está correto
+import sys
+import os
 import logging
+from etl.extract import buscarPokemonNome
+from fastapi import FastAPI, Form
+from fastapi.responses import HTMLResponse
+import pandas as pd
+
 
 logging.basicConfig(filename="main.log", level=logging.ERROR, 
                     format="%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s",
@@ -39,7 +42,7 @@ async def form():
 @app.post("/pokemon", response_class=HTMLResponse)
 async def get_pokemon(nome: str = Form(...)):
     try:
-        dados = buscarPokemonNome(nome)
+        dados = buscarPokemonNome(nome.lower())
         html = f"""
         <html>
             <head>
@@ -62,3 +65,5 @@ async def get_pokemon(nome: str = Form(...)):
     except Exception as e:
         logging.error(f"Erro ao buscar pokemon: {e}")
         return HTMLResponse(content="<h2>Erro ao processar busca. Verifique o log.</h2>")
+    
+    

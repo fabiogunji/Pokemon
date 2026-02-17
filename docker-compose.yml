@@ -1,32 +1,28 @@
 version: '3.9'
+
 services:
-  db:
-    image: postgres:15
-    container_name: postgres_db
+  db:  # Mudei de postgresql para db para bater com o depends_on
+    image: bitnami/postgresql:latest
+    container_name: poke-container-db
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: pokedb
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=pokedb
     ports:
       - "5432:5432"
     volumes:
+      - poke_api_db:/bitnami/postgresql
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
 
-  etl:
-    build: ./etl
-    depends_on:
-      - db
-
   api:
-    build: ./api
+    build: ./api  # O Docker vai procurar o ARQUIVO Dockerfile aqui dentro
     ports:
       - "8000:8000"
     depends_on:
       - db
-
-  agent:
-    build: ./agent
     environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-    depends_on:
-      - api
+      # O HOST da conexão deve ser 'db' e não 'localhost'
+      - DATABASE_URL=postgresql://admin:admin@db:5432/pokedb
+
+volumes:
+    poke_api_db:
