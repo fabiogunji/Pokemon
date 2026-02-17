@@ -51,6 +51,7 @@ def carregarDadosStgPokemons(nome, lista):
         conn.close()
 
 def carregarDadosPokemons(p):
+    logging.info(f"Inserção de Pokemons na tabela: {p['nome']}")     
     conn = get_connection() # Usando seu db_connection.py corrigido
     cur = conn.cursor()
     try:
@@ -75,7 +76,8 @@ def carregarDadosPokemons(p):
         ))
         conn.commit()
     except Exception as e:
-        print(f"Erro ao inserir no banco: {e}")
+        logging.error(f"Erro ao inserir dados dp Pokenmon na tabela {p['nome']}: {e}")
+        logging.exception(f"Erro ao inserir dados dp Pokenmon na tabela {p['nome']}: {e}")
         conn.rollback()
     finally:
         cur.close()

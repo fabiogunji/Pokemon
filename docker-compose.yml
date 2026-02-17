@@ -29,6 +29,21 @@ services:
       - DB_PASS=admin
       - DB_PORT=5432
 
+  agent:
+    build: .
+    container_name: poke-agent
+    env_file:
+      - .env  # Isso diz ao Docker para carregar as variáveis do seu arquivo
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY} # Repassa a chave do .env para o container
+      - DB_HOST=db
+      - DB_NAME=pokedb
+      - DB_USER=admin
+      - DB_PASS=admin
+      - DB_PORT=5432
+    depends_on:
+      - db
+
 volumes:
   pg_data_final:
     driver: local

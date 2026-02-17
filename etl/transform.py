@@ -9,7 +9,7 @@ import requests
 import logging
 
 def transformarDados(nome, resGeral):
-    try:
+    try:        
         logging.info(f"Iniciando transformação: {nome}")
         data = resGeral.json()
         
@@ -53,6 +53,7 @@ def transformarDados(nome, resGeral):
 
     except Exception as e:
         logging.error(f"Erro na transformação de {nome}: {e}")
+        logging.exception(f"Erro na transformação de {nome}: {e}")
         raise e
 
 '''
