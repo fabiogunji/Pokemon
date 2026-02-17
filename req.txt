@@ -1,3 +1,4 @@
+openai
 pandas
 requests
 sqlalchemy
@@ -7,7 +8,6 @@ uvicorn
 openai-agents
 pydantic
 python-multipart
-openai
 python-dotenv
 
 

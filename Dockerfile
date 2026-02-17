@@ -1,4 +1,5 @@
 # 1. Imagem base
+
 FROM python:3.11-slim
 
 # 2. Diretório de trabalho (Raiz da aplicação no container)

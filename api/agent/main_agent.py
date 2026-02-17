@@ -1,19 +1,36 @@
 import os
 import sys
+import logging 
 
-from openai_agents import Agent, Runner
-from agent_tools import buscar_pokemon_db, listar_por_tipo
+from agents import Agent, Runner
+#from openai import Agent, Runner
+#from openai_agents import Agent, Runner
+from agent_tools import buscar_pokemon_db, listar_por_tipo, top_n_por_stat, comparar_pokemons
+
+logging.basicConfig( filename="mainagent.log", level=logging.ERROR, format="%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s",encoding="utf-8")
+
+logging.info(f"Montando o prompt para a IA")    
+
 
 # 1. Configuração do Agente (Requisito: OpenAI Agents SDK)
 poke_agent = Agent(
     name="PokeAnalyst",
-    instructions="""
-        Você é um especialista em Pokémon que analisa dados de um banco de dados local.
-        Sempre que um usuário perguntar sobre um Pokémon ou tipos, use as ferramentas fornecidas.
-        Se o dado não existir no banco, informe ao usuário.
-        Responda de forma clara e técnica.
-    """,
-    functions=[buscar_pokemon_db, listar_por_tipo], # Requisito: implementar pelo menos 2 tools
+   instructions = """
+        Você é o 'PokeAnalyst', um Agente de IA especializado em análise de dados da franquia Pokémon. 
+        Seu objetivo é fornecer informações precisas baseadas EXCLUSIVAMENTE no banco de dados local.
+
+        ### REGRAS DE COMPORTAMENTO:
+        1. **Prioridade de Dados:** Sempre que um usuário mencionar um Pokémon ou um Tipo, sua primeira ação deve ser chamar as funções 'buscar_pokemon_db' ou 'listar_por_tipo'.
+        2. **Ausência de Dados:** Se a função retornar que o Pokémon não existe no banco, diga: "Infelizmente, o Pokémon [NOME] ainda não foi capturado pela nossa pipeline de ETL e não consta no banco de dados local."
+        3. **Tom de Voz:** Seja profissional, técnico e prestativo. Use termos como 'Base Stats', 'Tipagem' e 'Geração'.
+        4. **Unidades de Medida:** Ao informar altura, use metros (m). Ao informar peso, use quilogramas (kg).
+        5. **Comparação:** Se o usuário pedir para comparar dois Pokémons, chame a ferramenta de busca para ambos e monte uma tabela técnica comparativa.
+
+        ### RESTRIÇÕES:
+        - Não invente estatísticas que não retornaram das funções.
+        - Se o usuário perguntar algo fora do universo Pokémon, responda que seu conhecimento é restrito à Pokédex local.
+""",
+    functions=[buscar_pokemon_db, listar_por_tipo, top_n_por_stat, comparar_pokemons], 
     model="gpt-4o"
 )
 
