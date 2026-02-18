@@ -37,7 +37,7 @@ def carregarDadosStgPokemons(nome, lista):
           
         cur.execute("""
             INSERT INTO public.stgpokemon(nome, geral) VALUES (%s, %s)
-        """, (nome, tuple(lista))        
+        """, (nome, lista)        
         )          
         
         conn.commit()                
@@ -83,6 +83,33 @@ def carregarDadosPokemons(p):
         cur.close()
         conn.close()
 
+
+def peqsuisa_pokemon_banco(nome):
+    try:
+        conn = get_connection() # Usa sua função de conexão existente
+        cur = conn.cursor()
+        
+        # Busca na tabela final pelos dados estruturados
+        query = "SELECT nome, geracao, hp, ataque, defesa, velocidade, tipo_1, tipo_2, altura, peso FROM pokemon WHERE nome = %s"
+        cur.execute(query, (nome.lower(),))
+        row = cur.fetchone()
+        
+        if row:
+            # Transforma o resultado em um dicionário para facilitar o uso no HTML
+            cols = [desc[0] for desc in cur.description]
+           
+            return dict(zip(cols, row))
+        return None
+    
+    except Exception as e:
+        print(f"Erro ao buscar no banco: {e}")
+        return None
+    finally:
+        cur.close()
+        conn.close()
+    
+    
+    
 '''
 def carregarDadosPokemons(nome, listaTipo, listaEstatistica, listaGeracao):
     try:

@@ -1,6 +1,7 @@
 import requests
 from etl.load import carregarDadosPokemons 
 from etl.load import carregarDadosStgPokemons   
+import json
 import logging 
 
 logging.basicConfig( filename="transform.log", level=logging.ERROR, format="%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s",encoding="utf-8")
@@ -43,7 +44,8 @@ def transformarDados(nome, resGeral):
 
         # 5. Carga na Staging (Dados originais/brutos)
         # Convertemos para string para a coluna 'geral'
-        carregarDadosStgPokemons(nome, str(dados_pokemon))
+        #carregarDadosStgPokemons(nome, str(dados_pokemon))
+        carregarDadosStgPokemons(nome, json.dumps(dados_pokemon))
 
         # 6. Carga na Tabela Final (Passando o dicionário organizado)
         carregarDadosPokemons(dados_pokemon)

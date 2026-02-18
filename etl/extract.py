@@ -1,5 +1,6 @@
 import requests
 from etl.transform import transformarDados
+from etl.load import peqsuisa_pokemon_banco
 import logging
 
 logging.basicConfig( filename="main.log", level=logging.ERROR, format="%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s",encoding="utf-8")
@@ -42,6 +43,22 @@ def buscar_imagem_pokemon(nome):
     else:
         return "Pokémon não encontrado!"
 
+    
+def peqsuisa_pokemon(nome: str):
+    try:
+        
+        dadosPokemom =  peqsuisa_pokemon_banco(str)  
+        
+       
+        if dadosPokemom:            
+            return dadosPokemom
+        
+        return None
+    
+    except Exception as e:
+        print(f"Erro ao buscar no banco: {e}")
+        return None
+    
     
     '''
     listaDadosGerais.append(data)

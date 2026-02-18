@@ -1,6 +1,7 @@
 import os
 import sys
-import logging 
+import logging
+import asyncio
 
 from agents import Agent, Runner
 #from openai import Agent, Runner
@@ -15,7 +16,7 @@ logging.info(f"Montando o prompt para a IA")
 # 1. Configuração do Agente (Requisito: OpenAI Agents SDK)
 poke_agent = Agent(
     name="PokeAnalyst",
-   instructions = """
+    instructions = """
         Você é o 'PokeAnalyst', um Agente de IA especializado em análise de dados da franquia Pokémon. 
         Seu objetivo é fornecer informações precisas baseadas EXCLUSIVAMENTE no banco de dados local.
 
@@ -30,11 +31,11 @@ poke_agent = Agent(
         - Não invente estatísticas que não retornaram das funções.
         - Se o usuário perguntar algo fora do universo Pokémon, responda que seu conhecimento é restrito à Pokédex local.
 """,
-    functions=[buscar_pokemon_db, listar_por_tipo, top_n_por_stat, comparar_pokemons], 
+    tools=[buscar_pokemon_db, listar_por_tipo, top_n_por_stat, comparar_pokemons], 
     model="gpt-4o"
 )
 
-def executar_pergunta(pergunta: str):
+async def executar_pergunta(pergunta: str):
     """Executa a interação entre o usuário e a IA utilizando o Runner do SDK."""
     try:
         # O Runner gerencia automaticamente a chamada das tools (funções)
@@ -48,6 +49,6 @@ if __name__ == "__main__":
     # Pega a pergunta passada pelo comando 'docker compose run'
     if len(sys.argv) > 1:
         query = " ".join(sys.argv[1:])
-        executar_pergunta(query)
+        asyncio.run(executar_pergunta(query))        
     else:
         print("Por favor, envie uma pergunta. Exemplo: docker compose run --rm agent 'Quem é o Pikachu?'")
