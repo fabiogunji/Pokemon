@@ -18,7 +18,7 @@ up:
 # 3. ETL: Executa o pipeline de dados (Extração, Transformação e Carga)
 # Ajuste o caminho se o seu arquivo de entrada do ETL for diferente
 etl:
-	$(COMPOSE) run --rm api python etl/main.py
+	$(COMPOSE) run --rm api python api/main.py
 
 # 4. Agente: Faz uma pergunta para a IA
 # Uso: make ask QUERY="Quais os tipos do Pikachu?"

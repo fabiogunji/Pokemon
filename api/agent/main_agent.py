@@ -3,6 +3,7 @@ import sys
 import logging
 import asyncio
 
+from .agent_discovery import Agent
 from agents import Agent, Runner, Tool
 from agent_tools import (
     buscar_pokemon_no_banco,
