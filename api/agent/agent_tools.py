@@ -1,17 +1,20 @@
 import os
 import logging 
+from agents import tool
 
 
 from etl.db_connection import get_connection # Usa sua conexão já criada
  
 logging.basicConfig( filename="agent.log", level=logging.ERROR, format="%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s",encoding="utf-8")
 
-
-def buscar_pokemon_db(nome: str) -> dict:
+@tool
+def buscar_pokemon_no_banco(nome: str) -> dict:
+    """
+    Busca os status e informações de um Pokémon específico no banco de dados local.
+    """
+    
     logging.info(f"Agente de busca de Pokemon no banco a API por Nome: {nome}")    
-    """
-    Busca detalhes de um Pokémon específico no banco de dados local.
-    """
+    
     try:        
         conn = get_connection()
         cur = conn.cursor()
@@ -32,11 +35,12 @@ def buscar_pokemon_db(nome: str) -> dict:
         cur.close()
         conn.close()
 
-
-def listar_por_tipo(tipo: str) -> list:
+@tool
+def listar_por_tipo(tipo: str) -> dict:
     """
     Lista todos os Pokémons de um determinado tipo (tipo_1 ou tipo_2).
     """
+    
     try:
         conn = get_connection()
         cur = conn.cursor()
@@ -49,12 +53,13 @@ def listar_por_tipo(tipo: str) -> list:
         cur.close()
         conn.close()
         
-        
-def top_n_por_stat(stat: str, n: int = 5) -> list:
+@tool
+def top_n_por_stat(stat: str, n: int = 5) -> dict:
     """
     Retorna o ranking dos top N Pokémons baseando-se em uma estatística específica.
     Estatísticas válidas: hp, ataque, defesa, velocidade.
     """
+    
     valid_stats = ['hp', 'ataque', 'defesa', 'velocidade']
     if stat.lower() not in valid_stats:
         return {"erro": f"Estatística inválida. Use uma destas: {', '.join(valid_stats)}"}
@@ -73,7 +78,7 @@ def top_n_por_stat(stat: str, n: int = 5) -> list:
         cur.close()
         conn.close()
 
-
+@tool
 def comparar_pokemons(pokemon_a: str, pokemon_b: str) -> dict:
     """
     Busca e compara as estatísticas de dois Pokémons diferentes.

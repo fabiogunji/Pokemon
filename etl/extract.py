@@ -16,12 +16,8 @@ def buscarPokemonNome(nome):
         resGeral = requests.get(url)            
         data = resGeral.json()
         
-        print('Vai transformação')
-            
         # Transforma valores
-        transformarDados(nome,resGeral)
-        
-        print('FIM transformação')
+        transformarDados(nome,resGeral)        
         
     except Exception as e: 
         # tratamento do erro         
@@ -45,10 +41,8 @@ def buscar_imagem_pokemon(nome):
 
     
 def peqsuisa_pokemon(nome: str):
-    try:
-        
-        dadosPokemom =  peqsuisa_pokemon_banco(str)  
-        
+    try:        
+        dadosPokemom =  peqsuisa_pokemon_banco(str)          
        
         if dadosPokemom:            
             return dadosPokemom
@@ -59,26 +53,4 @@ def peqsuisa_pokemon(nome: str):
         print(f"Erro ao buscar no banco: {e}")
         return None
     
-    
-    '''
-    listaDadosGerais.append(data)
-    
-    # Extrair os tipos 
-    tipos = [t['type']['name'] for t in data['types']]   
-    
-    stats = {stat['stat']['name']: stat['base_stat'] for stat in data['stats']}
-    
-    
-    # Depois consulta o endpoint species 
-    url_species = f"https://pokeapi.co/api/v2/pokemon-species/{nome}" 
-    data_species = requests.get(url_species).json() 
-    
-    # O campo 'generation' traz a URL e o nome da geração     
-    generation = data_species['generation']['name']
-    
-    
-    lista3 = [*tipos, *stats,*data_species]
-    return lista3
-    '''
-    #return resGeral
- 
+   

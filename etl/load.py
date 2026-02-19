@@ -11,8 +11,6 @@ def pesquisaStgPokemon(nome):
     conn = get_connection()
     print('ini cursor')
     cur = conn.cursor()    
-    
-    print('rodando insert')        
         
     cur.execute("""
         SELECT  max("Id") FROM public."StgPokemon" WHERE "Nome" = %s
@@ -22,8 +20,6 @@ def pesquisaStgPokemon(nome):
     resultados = cur.fetchall() 
     for linha in resultados:
          idStgPokemon = linha["IdPokemon_seq"]
-    
-    print(idStgPokemon)
     
     return idStgPokemon
  

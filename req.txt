@@ -9,5 +9,8 @@ openai-agents
 pydantic
 python-multipart
 python-dotenv
-
+langchain
+langchain-core
+langchain-community
+agents
 
