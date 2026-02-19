@@ -10,14 +10,17 @@ listaDadosGerais = []
 
 def buscarPokemonNome(nome):
     try:
-        logging.info(f"Busca de Pokemon na API por Nome: {nome}")    
+        logging.info(f"Inicio da busca de Pokemon na API por Nome: {nome}")    
     
         url = f"https://pokeapi.co/api/v2/pokemon/{nome}"    
         resGeral = requests.get(url)            
         data = resGeral.json()
         
         # Transforma valores
-        transformarDados(nome,resGeral)        
+        transformarDados(nome,resGeral)      
+
+        logging.info(f"Final da busca de Pokemon na API por Nome: {nome}")    
+
         
     except Exception as e: 
         # tratamento do erro         
@@ -28,6 +31,8 @@ def buscarPokemonNome(nome):
 
 
 def buscar_imagem_pokemon(nome):
+    logging.info(f"Inicio da busca de image do Pokemon na API por Nome: {nome}")    
+
     url = f"https://pokeapi.co/api/v2/pokemon/{nome.lower()}"
     response = requests.get(url)
 
@@ -35,22 +40,28 @@ def buscar_imagem_pokemon(nome):
         dados = response.json()
         # A URL da imagem fica dentro de 'sprites'
         url_imagem = dados['sprites']['front_default']
+
+        logging.info(f"Final da busca de image do Pokemon na API por Nome: {nome}")    
         return url_imagem
     else:
+        logging.info(f"Inicio da busca de image do Pokemon na API por Nome: {nome}")    
         return "Pokémon não encontrado!"
 
     
 def peqsuisa_pokemon(nome: str):
     try:        
+        logging.info(f"Inicio da pesquisa de Pokemon: {nome}")    
         dadosPokemom =  peqsuisa_pokemon_banco(str)          
        
         if dadosPokemom:            
             return dadosPokemom
-        
+
+        logging.info(f"Final da pesquisa de Pokemon: {nome}")    
+
         return None
     
     except Exception as e:
-        print(f"Erro ao buscar no banco: {e}")
+        logging.error(f"Erro ao buscar no banco: {e}")
         return None
     
    

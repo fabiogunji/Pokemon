@@ -48,7 +48,7 @@ def transformarDados(nome, resGeral):
         # 6. Carga na Tabela Final (Passando o dicionário organizado)
         carregarDadosPokemons(dados_pokemon)
         
-        logging.info(f"Fim da carga para {nome}")
+        logging.info(f"Fim da tranformação para {nome}")
         return dados_pokemon
 
     except Exception as e:

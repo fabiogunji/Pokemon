@@ -27,6 +27,8 @@ def buscar_pokemon_no_banco(nome: str) -> dict:
         
         # Mapeia colunas (ajuste conforme seu script SQL)
         cols = [desc[0] for desc in cur.description]
+
+        logging.info(f"Final do a gente de busca de Pokemon no banco a API por Nome: {nome}") 
         
         return dict(zip(cols, row))
     except Exception as e:
@@ -40,12 +42,16 @@ def listar_por_tipo(tipo: str) -> dict:
     """
     Lista todos os Pokémons de um determinado tipo (tipo_1 ou tipo_2).
     """
+    logging.info(f"Lista Pokemon por tipo") 
     
     try:
         conn = get_connection()
         cur = conn.cursor()
         query = "SELECT nome FROM pokemon WHERE tipo_1 = %s OR tipo_2 = %s"
         cur.execute(query, (tipo.lower(), tipo.lower()))
+
+        logging.info(f"Final da lista Pokemon por tipo") 
+
         return [row[0] for row in cur.fetchall()]
     except Exception as e:
         return []
@@ -59,7 +65,7 @@ def top_n_por_stat(stat: str, n: int = 5) -> dict:
     Retorna o ranking dos top N Pokémons baseando-se em uma estatística específica.
     Estatísticas válidas: hp, ataque, defesa, velocidade.
     """
-    
+    logging.info(f"Lista Pokemon por estatisticas") 
     valid_stats = ['hp', 'ataque', 'defesa', 'velocidade']
     if stat.lower() not in valid_stats:
         return {"erro": f"Estatística inválida. Use uma destas: {', '.join(valid_stats)}"}
@@ -71,6 +77,9 @@ def top_n_por_stat(stat: str, n: int = 5) -> dict:
         query = f"SELECT nome, {stat.lower()} FROM pokemon ORDER BY {stat.lower()} DESC LIMIT %s"
         cur.execute(query, (n,))
         rows = cur.fetchall()
+
+        logging.info(f"Final da lista Pokemon por estatisticas") 
+
         return [{"nome": row[0], stat.lower(): row[1]} for row in rows]
     except Exception as e:
         return {"erro": str(e)}
@@ -83,6 +92,8 @@ def comparar_pokemons(pokemon_a: str, pokemon_b: str) -> dict:
     """
     Busca e compara as estatísticas de dois Pokémons diferentes.
     """
+    
+    logging.info(f"Compara Pokemons") 
     try:
         conn = get_connection()
         cur = conn.cursor()
@@ -95,6 +106,9 @@ def comparar_pokemons(pokemon_a: str, pokemon_b: str) -> dict:
         
         cols = [desc[0] for desc in cur.description]
         resultado = [dict(zip(cols, row)) for row in rows]
+
+        logging.info(f"Final do Compara Pokemons") 
+
         return {"comparacao": resultado}
     except Exception as e:
         return {"erro": str(e)}
